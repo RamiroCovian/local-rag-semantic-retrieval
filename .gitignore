@@ -157,6 +157,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# ChromaDB persistente local
+vectorstore/
+
 # Spyder project settings
 .spyderproject
 .spyproject
