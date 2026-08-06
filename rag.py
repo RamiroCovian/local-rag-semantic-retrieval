@@ -85,8 +85,8 @@ async def get_rag_response(query: str, *, k: int = TOP_K) -> RAGResponse:
 
 async def _run_cli(query: str) -> None:
     response = await get_rag_response(query)
-    print(f"Respuesta: {response.answer}")
-    print(f"Referencias: {response.references}")
+    print(f"\nRespuesta: {response.answer}")
+    print(f"Referencias: {response.references}\n")
 
 
 def main() -> None:
@@ -94,11 +94,26 @@ def main() -> None:
     parser.add_argument(
         "query",
         nargs="?",
-        default="¿En qué año se declaró la independencia de la Argentina?",
-        help="Pregunta a consultar",
+        default=None,
+        help="Pregunta opcional. Si no se pasa, se pide por consola.",
     )
     args = parser.parse_args()
-    asyncio.run(_run_cli(args.query))
+
+    if args.query:
+        asyncio.run(_run_cli(args.query))
+        return
+
+    print("RAG local — historia argentina")
+    print('Escribí tu pregunta (o "salir" para terminar).\n')
+
+    while True:
+        query = input("Pregunta: ").strip()
+        if not query:
+            continue
+        if query.lower() in {"salir", "exit", "q"}:
+            print("Listo.")
+            break
+        asyncio.run(_run_cli(query))
 
 
 if __name__ == "__main__":
