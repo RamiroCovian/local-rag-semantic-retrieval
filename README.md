@@ -82,6 +82,14 @@ python ingest.py --force
 ### 2) Consulta RAG (async)
 
 ```powershell
+python rag.py
+```
+
+Te pide la pregunta por consola. Escribí `salir` para terminar.
+
+También podés pasar la pregunta como argumento:
+
+```powershell
 python rag.py "¿En qué año se declaró la independencia de la Argentina?"
 ```
 
