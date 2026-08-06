@@ -76,3 +76,44 @@ def get_embeddings():
         f"EMBEDDING_PROVIDER no soportado: {EMBEDDING_PROVIDER!r}. "
         "Usá 'gemini' u 'openai'."
     )
+
+
+def get_chat_model():
+    """Devuelve el chat model según LLM_PROVIDER."""
+    if LLM_PROVIDER == "openai":
+        if not OPENAI_API_KEY:
+            raise ValueError("Falta OPENAI_API_KEY en .env.")
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(
+            model=OPENAI_CHAT_MODEL,
+            api_key=OPENAI_API_KEY,
+            temperature=0,
+        )
+
+    if LLM_PROVIDER == "anthropic":
+        if not ANTHROPIC_API_KEY:
+            raise ValueError("Falta ANTHROPIC_API_KEY en .env.")
+        from langchain_anthropic import ChatAnthropic
+
+        return ChatAnthropic(
+            model=ANTHROPIC_CHAT_MODEL,
+            api_key=ANTHROPIC_API_KEY,
+            temperature=0,
+        )
+
+    if LLM_PROVIDER in {"gemini", "google"}:
+        if not GOOGLE_API_KEY:
+            raise ValueError("Falta GOOGLE_API_KEY en .env.")
+        from langchain_google_genai import ChatGoogleGenerativeAI
+
+        return ChatGoogleGenerativeAI(
+            model=GEMINI_CHAT_MODEL,
+            google_api_key=GOOGLE_API_KEY,
+            temperature=0,
+        )
+
+    raise ValueError(
+        f"LLM_PROVIDER no soportado: {LLM_PROVIDER!r}. "
+        "Usá 'openai', 'anthropic' o 'gemini'."
+    )
